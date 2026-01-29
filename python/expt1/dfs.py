@@ -23,8 +23,9 @@ def dfs(graph,start):
             result.append(node)
         
         for neighbour in reversed(graph[node]):
-            #if neighbour not in visited:
-           stack.append(neighbour)
+            #this loop(👇) is used to optimize the order of traversal and prevent repeating nodes
+            if neighbour not in visited:    
+                stack.append(neighbour)
 
     return result
 
