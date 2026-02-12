@@ -4,10 +4,11 @@ from collections import deque
 def input_graph():
     graph={}
     n=int(input("enter the number of nodes: "))
-    for _ in range(n):
+    while(n):
         node=input("enter the node: ")
         neighbours=input("enter the neighbouring nodes sepeeated by space (press enter if no neighbour): ").split()
         graph[node]=neighbours
+        n=n-1
     return graph
 
 # graph ={
