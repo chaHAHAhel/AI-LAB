@@ -6,9 +6,6 @@ j1 = int(input("Enter the size of jug 1: "))
 j2 = int(input("Enter the size of jug 2: "))
 r = int(input("Enter the required quantity in liters: "))
 
-jug1 = 0
-jug2 = 0
-
 # Check if solution is possible
 if (r > j1 and r > j2) or r % gcd(j1, j2) != 0:
     print("Solution not possible")
@@ -38,27 +35,37 @@ def rule6(jug1, jug2):  # Pour jug2 → jug1
 rules = [rule1, rule2, rule3, rule4, rule5, rule6]
 
 # BFS
-visited = set()
 queue = deque()
-queue.append((0, 0, []))  # (jug1, jug2, path)
+queue.append((0, 0, [(0, 0)]))  # (jug1, jug2, path)
+
+visited = set()
+solutions = []
 
 while queue:
     x, y, path = queue.popleft()
 
     if (x, y) in visited:
         continue
+
     visited.add((x, y))
-    path = path + [(x, y)]
 
-    # Check goal
+    # If solution found, store it but DO NOT break
     if x == r or y == r:
-        print("\nSolution Steps:")
-        for step in path:
-            print(step)
-        break
+        solutions.append(path)
+        continue
 
-    # Apply all rules
-    for rl in rules:
-        nx, ny = rl(x, y)
+    for rule in rules:
+        nx, ny = rule(x, y)
         if (nx, ny) not in visited:
-            queue.append((nx, ny, path))
+            queue.append((nx, ny, path + [(nx, ny)]))
+
+# Print all solutions
+if solutions:
+    print("\nAll Possible Solution Paths:\n")
+    for i, sol in enumerate(solutions, 1):
+        print(f"Solution {i}:")
+        for step in sol:
+            print(step)
+        print()
+else:
+    print("No solution found.")
